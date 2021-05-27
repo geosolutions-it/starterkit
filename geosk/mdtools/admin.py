@@ -118,7 +118,7 @@ def post_save_nodeconfiguration(request, instance):
                         pass
             pass
 
-    except Exception, e:
+    except Exception as e:
         logging.error('Error while saving pycsw settings')
         logging.error(str(e))
 
@@ -127,7 +127,7 @@ def post_save_nodeconfiguration(request, instance):
         set_sensors_configuration(instance)
         messages.warning(
             request, "The SOS metadta were configured. You need to manually restart the SOS service in order to apply the changes.")
-    except Exception, e:
+    except Exception as e:
         messages.error(
             request, 'An error occured while saving SOS metadata: you need to manually configure the SOS settings through admin interface.')
         logging.error('Error while saving SOS settings')
@@ -212,12 +212,12 @@ def set_sensors_configuration(instance):
         'service.sosUrl': settings.SOS_URL,
     }
 
-    for k, v in configuration_strings.iteritems():
+    for k, v in iter(configuration_strings.items()):
         el = StringSettings.objects.using('sensors').get(identifier=k)
         el.value = getval(v)
         el.save()
 
-    for k, v in configuration_uri.iteritems():
+    for k, v in iter(configuration_uri.items()):
         el = UriSettings.objects.using('sensors').get(identifier=k)
         el.value = getval(v)
         el.save()

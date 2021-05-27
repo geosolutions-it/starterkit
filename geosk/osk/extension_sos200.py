@@ -1,13 +1,13 @@
 import simplejson as json
 
-from urllib import urlencode
+from urllib.parse import urlencode
 from owslib.etree import etree
 from owslib.namespaces import Namespaces
 from owslib.util import openURL, testXMLValue, nspath_eval, xmltag_split, dict_union, extract_xml_list
 from owslib.swe.sensor.sml import SensorML
 from owslib import ows
 
-from extension_sos_utils import *
+from geosk.osk.extension_sos_utils import *
 
 def get_feature_of_interest_json(self,
                                  featureOfInterest = None,
@@ -33,13 +33,12 @@ def get_feature_of_interest_json(self,
 
     if kwargs:
         for kw in kwargs:
-            request[kw]=kwargs[kw]
+            request[kw] = kwargs[kw]
 
     data = json.dumps(request)
 
     response = openURL(base_url, data, method, username=self.username, password=self.password).read()
     return json.loads(response)
-
 
 
 def insert_observation_json(self,
@@ -99,45 +98,39 @@ def insert_observation_json(self,
     return response
 
 
-
 def get_result_template(self,
                         offering=None,
                         observedProperty=None,
                         method='Post',
                         **kwargs):
-
     base_url = 'http://sp7.irea.cnr.it/tomcat/MareeVe/sos/json'
-    request = {'service': 'SOS',
-               'version': self.version,
-               'request': 'GetResultTemplate'}
-    request['offering'] = offering
-    request['observedProperty'] = observedProperty
-
+    request = {'service': 'SOS', 'version': self.version, 'request': 'GetResultTemplate', 'offering': offering,
+               'observedProperty': observedProperty}
     if kwargs:
         for kw in kwargs:
             request[kw]=kwargs[kw]
-
     data = json.dumps(request)
-
-    print data
-
+    print(data)
     response = openURL(base_url, data, method, username=self.username, password=self.password).read()
     return response
 
+
 def get_namespaces():
     n = Namespaces()
-    ns = n.get_namespaces(["fes","ogc","om","gml32","sml","swe20","swes","xlink"])
+    ns = n.get_namespaces(["fes", "ogc", "om", "gml32", "sml", "swe20", "swes", "xlink"])
     ns["ows"] = n.get_namespace("ows110")
     ns["sos"] = n.get_namespace("sos20")
     return ns
+
+
 namespaces = get_namespaces()
+
 
 def describe_sensor(self, outputFormat=None,
                           procedure=None,
                           method='Get',
                           raw=False,
                           **kwargs):
-
     try:
         base_url = self.get_operation_by_name('DescribeSensor').methods[method]['url']
     except:

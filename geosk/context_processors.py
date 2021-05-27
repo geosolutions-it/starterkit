@@ -1,5 +1,5 @@
 from django.conf import settings
-from mdtools.models import ServicesMetadata
+from geosk.mdtools.models import ServicesMetadata
 
 
 def sk(request):

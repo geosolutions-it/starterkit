@@ -106,7 +106,6 @@ INSTALLED_APPS = (
     'overextends',  # https://github.com/stephenmcd/django-overextends
     'rosetta',
     'grappelli.dashboard',
-    'grappelli',
     'analytical',
     'taggit_templatetags2',
 ) + INSTALLED_APPS
@@ -226,7 +225,7 @@ if MONITORING_ENABLED:
         MONITORING_HOST_NAME = os.getenv("MONITORING_HOST_NAME", 'geonode')
     else:
         MONITORING_HOST_NAME = os.getenv("MONITORING_HOST_NAME", 'localhost')
-		
+
 GEOIP_PATH = os.getenv('GEOIP_PATH', os.path.join(PROJECT_ROOT, 'GeoIPCities.dat'))
 
 LOGGING = {
@@ -628,10 +627,10 @@ if GEONODE_CLIENT_LAYER_PREVIEW_LIBRARY == 'mapstore':
     MAPSTORE_CATALOGUE_SELECTED_SERVICE = "Demo WMS Service"
 
     if GEONODE_CATALOGUE_SERVICE:
-        MAPSTORE_CATALOGUE_SERVICES[GEONODE_CATALOGUE_SERVICE.keys(
-        )[0]] = GEONODE_CATALOGUE_SERVICE[GEONODE_CATALOGUE_SERVICE.keys()[0]]
-        MAPSTORE_CATALOGUE_SELECTED_SERVICE = GEONODE_CATALOGUE_SERVICE.keys()[
-            0]
+        geonode_catalogue_service_keys = list(GEONODE_CATALOGUE_SERVICE.keys())
+        MAPSTORE_CATALOGUE_SERVICES[geonode_catalogue_service_keys[0]] = \
+            GEONODE_CATALOGUE_SERVICE[geonode_catalogue_service_keys[0]]
+        MAPSTORE_CATALOGUE_SELECTED_SERVICE = geonode_catalogue_service_keys[0]
 
     DEFAULT_MS2_BACKGROUNDS = [
         {

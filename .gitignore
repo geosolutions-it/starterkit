@@ -23,6 +23,9 @@ var/
 .installed.cfg
 *.egg
 
+venv
+
+
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
@@ -65,6 +68,9 @@ development.db-journal
 \.pytest_cache/
 
 #*.dat
+
+#IDE
+*.idea
 
 /geosk/static/.components/
 /geosk/static/node_modules/

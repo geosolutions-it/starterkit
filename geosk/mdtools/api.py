@@ -11,7 +11,7 @@ from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.core.serializers.json import DjangoJSONEncoder
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -48,7 +48,7 @@ def get_datetype(ita):
         'publication': 'pubblicazione',
         'revision': 'revisione'
         }
-    for neutral, dt in DATETYPE.iteritems():
+    for neutral, dt in iter(DATETYPE.items()):
         if dt.lower() == ita.lower() or neutral.lower() == ita.lower():
             return neutral
     return None
@@ -76,10 +76,11 @@ def get_topic_category(ita):
         'structure': 'Strutture',
         'transportation': 'Trasporti'
         }
-    for neutral, tc in TOPIC_CATEGORY.iteritems():
+    for neutral, tc in iter(TOPIC_CATEGORY.items()):
         if tc.lower() == ita.lower() or neutral.lower() == ita.lower():
             return neutral
     return None
+
 
 def rndteditor(request, layername):
     layer = _resolve_layer(request, layername, 'layers.change_layer', _PERMISSION_MSG_METADATA)
@@ -121,7 +122,6 @@ def rndteditor(request, layername):
             'referencesystem': layer.srid.split(':')[1],
             }
 
-
     js_pars = json.dumps(pars, cls=DjangoJSONEncoder)
 
     queryStringValues['parameters'] = json.dumps(pars, cls=DjangoJSONEncoder)
@@ -150,6 +150,7 @@ def _ediml2rndt(ediml):
     else:
         return False
 
+
 def _get_fileid(ediml):
     ediml = etree.fromstring(ediml)
     return ediml.find('fileId').text
@@ -175,6 +176,7 @@ def ediml(request, layername):
     ediml = layer.mdextension.elements_xml
     return HttpResponse(ediml, content_type="text/xml")
 
+
 def rndt(request, layername):
     layer = _resolve_layer(request, layername, 'base.view_layer', _PERMISSION_MSG_METADATA)
     rndt = layer.mdextension.rndt_xml
@@ -186,7 +188,7 @@ def rndtproxy(request, layername):
     ediml = request.body
     try:
         rndt = _ediml2rndt(ediml)
-    except UnregisteredSKException, e:
+    except UnregisteredSKException as e:
         return json_response(errors=e.message,
                              status=500)
     if not rndt:
@@ -199,6 +201,7 @@ def rndtproxy(request, layername):
 
     return json_response(body={'success':True,'redirect': reverse('layer_detail', args=(layer.typename,))})
     # return HttpResponseRedirect()
+
 
 def _post_validate(vals):
     errors = []
@@ -213,6 +216,7 @@ def _post_validate(vals):
             errors.append(r)
     return errors
 
+
 def importediml(request, template='mdtools/upload_metadata.html'):
     if request.method == 'POST':
         form = UploadMetadataFileForm(request.POST, request.FILES)
@@ -222,7 +226,7 @@ def importediml(request, template='mdtools/upload_metadata.html'):
             ediml = request.FILES['file'].read()
             try:
                 rndt = _ediml2rndt(ediml)
-            except UnregisteredSKException, e:
+            except UnregisteredSKException as e:
                 messages.add_message(request, messages.ERROR, e)
             if not rndt:
                 messages.add_message(request, messages.ERROR, 'Cannot get RNDT.')
@@ -264,6 +268,7 @@ def _parse_metadata(xml):
     # rimuovo xml
     mdata.xml = None
     return mdata
+
 
 def _savelayermd(layer, rndt, ediml, version='1'):
     if ediml:
@@ -312,6 +317,7 @@ def _savelayermd(layer, rndt, ediml, version='1'):
 
     return True
 
+
 def _set_contact_role_scope(scope, contacts, resource):
     scope = _get_or_create_scope(scope)
     MultiContactRole.objects.filter(resource=resource, scope=scope).delete()
@@ -325,10 +331,12 @@ def _set_contact_role_scope(scope, contacts, resource):
                                             #role=role,
                                             scope=scope)
 
+
 def _get_or_create_scope(_scope):
     scopes = dict(SCOPE_VALUES)
     scope, is_created = ResponsiblePartyScope.objects.get_or_create(value=_scope)
     return scope
+
 
 def _get_or_create_role(contact, default='pointOfContact'):
     _role = contact['role']
@@ -337,6 +345,7 @@ def _get_or_create_role(contact, default='pointOfContact'):
         _role = default
     role, is_created = Profile.objects.get_or_create(profile=_role)
     return role
+
 
 def _get_or_create_profile(contact):
     _name = contact['name']
@@ -359,7 +368,10 @@ def _get_or_create_profile(contact):
     print(profile)
     return profile
 
+
 split_email_regexp = re.compile(r'[ .-_]')
+
+
 def _guess_name(email):
     parts = []
     _email = email.split('@')[0]
@@ -376,6 +388,7 @@ def _guess_name(email):
     else:
         return email
 
+
 # extend MD_Metadata
 class EDI_Metadata(MD_Metadata):
     def __init__(self, md):
@@ -385,6 +398,7 @@ class EDI_Metadata(MD_Metadata):
         for i in md.findall(util.nspath_eval('gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty', namespaces)):
             o = CI_ResponsibleParty(i)
             self.identification.cited.append(o)
+
 
 def rndt2dict(exml):
     """generate dict of properties from EDI_Metadata (INSPIRE - RNDT)"""
@@ -473,11 +487,11 @@ def rndt2dict(exml):
                 distributor_contact.append(c)
             vals['distributor_contact'] = distributor_contact
 
-
     if mdata.dataquality is not None:
         vals['data_quality_statement'] = mdata.dataquality.lineage
 
     return [vals, keywords]
+
 
 # TODO: move on ediproxy app
 # ediml version 2
@@ -491,7 +505,8 @@ def ediproxy_importmd(request, layername):
         _savelayermd(layer, isoml, ediml, version='2')
     except Exception as e:
         return json_response(exception=e, status=500)
-    return json_response(body={'success':True})
+    return json_response(body={'success': True})
+
 
 # fare una class base view
 # e spostare in una nuova funzione rest

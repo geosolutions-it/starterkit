@@ -3,13 +3,13 @@ import os
 import json
 import requests
 from lxml import etree
-from urlparse import urlsplit
+from urllib.parse import urlsplit
 
 from owslib.namespaces import Namespaces
 from owslib.util import nspath_eval
 
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
@@ -27,19 +27,24 @@ from geosk import UnregisteredSKException
 
 namespaces = Namespaces().get_namespaces('ows110')
 
+
 def lastediml(request):
     s = Sensor.objects.order_by('-id').all()[0]
     return HttpResponse(s.ediml, mimetype='application/xml')
+
 
 def lastsensorml(request):
     s = Sensor.objects.order_by('-id').all()[0]
     return HttpResponse(s.sensorml, mimetype='application/xml')
 
+
 class UploadView(TemplateView):
     template_name = 'osk/osk_upload.html'
+
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(UploadView, self).dispatch(*args, **kwargs)
+
 
 @login_required
 def deletesensor(request, template='osk/osk_deletesensor.html'):
@@ -73,26 +78,22 @@ def deletesensor(request, template='osk/osk_deletesensor.html'):
                 verify=False
             )
 
-
             if sos_response.status_code == 200:
                 tr = etree.fromstring(sos_response.content)
                 if tr.tag == nspath_eval("ows110:ExceptionReport", namespaces):
                     return json_response(exception=sos_response.text.encode('utf8'), status=500)
                 # force sos cache reload
                 force_soscache_reload()
-
             # todo: remove Sensor object
             return HttpResponseRedirect(reverse("osk_browse"))
         else:
-            return HttpResponse("Not allowed",status=403)
+            return HttpResponse("Not allowed", status=403)
     except PermissionDenied:
         return HttpResponse(
                 'You are not allowed to delete this layer',
                 mimetype="text/plain",
                 status=401
         )
-
-
 
 
 @login_required

@@ -1,5 +1,5 @@
 import cgi
-from urllib import urlencode
+from urllib.parse import urlencode
 from owslib.util import openURL, testXMLValue, nspath_eval, xmltag_split, dict_union, extract_xml_list
 
 def get_observable_by_procedure(self, procedure):
@@ -64,7 +64,7 @@ from owslib.namespaces import Namespaces
 namespaces = Namespaces().get_namespaces()
 from owslib.swe.sensor.sml import SensorML
 
-from extension_sos_utils import *
+from geosk.osk.extension_sos_utils import *
 
 class SosDescribeSensorResponse(object):
     def __init__(self, element, nsmap=nsmap):

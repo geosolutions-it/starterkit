@@ -1,6 +1,6 @@
 import json
 import os
-from urlparse import urlsplit
+from urllib.parse import urlsplit
 
 import requests
 
@@ -11,7 +11,7 @@ from django.forms.models import model_to_dict
 from django.shortcuts import render
 from geonode.utils import _get_basic_auth_info, http_client, json_response
 from geosk.mdtools.models import ServicesMetadata
-from models import SkRegistration
+from geosk.skregistration.models import SkRegistration
 
 
 @user_passes_test(lambda u: u.is_superuser)

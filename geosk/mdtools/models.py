@@ -86,10 +86,10 @@ class MdExtension(models.Model):
 
 
 class MultiContactRole(models.Model):
-    resource = models.ForeignKey(MdExtension)
-    contact  = models.ForeignKey(Profile)
+    resource = models.ForeignKey(MdExtension, on_delete=models.CASCADE)
+    contact = models.ForeignKey(Profile, on_delete=models.CASCADE)
     #role    = models.ForeignKey(Role)
-    scope    = models.ForeignKey(ResponsiblePartyScope)
+    scope = models.ForeignKey(ResponsiblePartyScope, on_delete=models.CASCADE)
 
 
 @property
@@ -135,17 +135,19 @@ ResourceBase.completeness = completeness
 
 SERVICE_METADATA_CACHE = None
 
+
 class ServicesMetadataManager(models.Manager):
     def get_current(self):
         global SERVICE_METADATA_CACHE
         if SERVICE_METADATA_CACHE is not None:
-            print 'use cache'
+            print('use cache')
             return SERVICE_METADATA_CACHE
         elif self.count() == 1:
-            print 'reset cache'
+            print('reset cache')
             SERVICE_METADATA_CACHE = self.all()[0]
             return SERVICE_METADATA_CACHE
         return None
+
 
 class ServicesMetadata(models.Model):
     """Model for storing Metadata about services

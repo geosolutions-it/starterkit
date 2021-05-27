@@ -1,19 +1,7 @@
 from datetime import datetime, timedelta
-import cgi
-from urllib import urlencode
-from urllib2 import HTTPError
 from xml.etree.ElementTree import fromstring
-from owslib.swe.sensor.sml import SensorML
 import requests
-
-from django.conf import settings
-
-from . import utils
-
-# override method to SOS 52North compatibility (remove version)
-
 from owslib.sos import SensorObservationService
-
 
 # extend SOS 1.0.0
 from . import extension_sos100
@@ -33,13 +21,19 @@ SensorObservationService_2_0_0.get_result_template = extension_sos200.get_result
 SensorObservationService_2_0_0.get_feature_of_interest_json = extension_sos200.get_feature_of_interest_json
 SensorObservationService_2_0_0.insert_observation_json = extension_sos200.insert_observation_json
 
+SML_URI = 'http://www.opengis.net/sensorML/1.0.1'
+SWE_URI = 'http://www.opengis.net/swe/1.0.1'
+
+
 class Catalog(object):
+
     def __init__(self, service_url, username="observations", password="observations", version='2.0.0'):
+        self._cache = dict()
         self.service_url = service_url
         self.username = username
         self.password = password
-        self._cache = dict()
         self.version = version
+        self.sos_service = None
 
     def get_capabilities_url(self):
         return extension_sos100.capabilities_url(None, self.service_url)
@@ -62,12 +56,12 @@ class Catalog(object):
         describe_sensor = cap.get_operation_by_name('DescribeSensor')
         sensor_ids = describe_sensor.parameters['procedure']['values']
         for sensor_id in sensor_ids:
-            ds = {}
+            ds = dict()
             ds["id"] = sensor_id
             ds["observable_properties"] = cap.get_observable_by_procedure(sensor_id)
             if full:
                 try:
-                    ds['describe_sensor'] = cap.describe_sensor(outputFormat='http://www.opengis.net/sensorML/1.0.1', procedure=sensor_id)
+                    ds['describe_sensor'] = cap.describe_sensor(outputFormat=SML_URI, procedure=sensor_id)
                     #ds['name'] = ds['describe_sensor'].sensor_ml.members[0].name
                     ds['name'] = ds['describe_sensor'].sensor_ml.members[0].name if ds['describe_sensor'].sensor_ml.members[0].name else ds['describe_sensor'].sensor_ml.members[0].identifiers['short name'].value
                     #ds['description'] = ds['describe_sensor'].sensor_ml.members[0].description
@@ -76,7 +70,7 @@ class Catalog(object):
                     # for output content in the SensorML
                     r = requests.get(sensor_id)
                     root = fromstring(r.content)
-                    ns = {'sml': 'http://www.opengis.net/sensorML/1.0.1', 'swe': 'http://www.opengis.net/swe/1.0.1'}
+                    ns = {'sml': SML_URI, 'swe': SWE_URI}
                     outputLen = len(root.findall(".//sml:output", ns))
                     outputs = []
                     for i in range(outputLen):

@@ -5,7 +5,7 @@ import logging
 import pycsw
 import subprocess
 import re
-from urlparse import urlparse
+from urllib.parse import urlparse
 
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
@@ -27,6 +27,7 @@ from django.db import connection
 
 
 logger = logging.getLogger(__name__)
+
 
 def get_data_api(request, format='json'):
     if request.method not in ('GET','POST'):
@@ -56,6 +57,7 @@ def get_data_api(request, format='json'):
     }
     return HttpResponse(json.dumps(results, cls=DjangoJSONEncoder), mimetype="application/json")
 
+
 def get_ubuntu_release():
     try:
         version = os.getenv('VERSION_UBUNTU', subprocess.check_output(['lsb_release', '-sr']))
@@ -63,6 +65,7 @@ def get_ubuntu_release():
     except:
         version = ''
     return version.strip()
+
 
 def get_postgres_version():
     c = connection.cursor()
@@ -75,6 +78,7 @@ def get_postgres_version():
         c.close()
     return version
 
+
 def get_postgis_version():
     c = connection.cursor()
     try:
@@ -86,6 +90,7 @@ def get_postgis_version():
         c.close()
     return version
 
+
 def get_java_version():
     try:
         version = os.getenv('VERSION_JAVA')
@@ -96,6 +101,7 @@ def get_java_version():
     except:
         version = ''
     return version
+
 
 def get_tomcat_version():
     try:
@@ -112,12 +118,14 @@ def get_tomcat_version():
         version = ''
     return version
 
+
 def _get_tomcat_version(catalina_home):
     cmd = os.path.join(catalina_home, 'bin', 'version.sh')
     out = subprocess.check_output(cmd).split("\n")
     for o in out:
         if o.find('Server number') >= 0:
             return o.split(':')[1]
+
 
 def get_sos_version():
     try:
@@ -134,6 +142,7 @@ def get_sos_version():
     except TypeError:
         version = ''
     return version.strip()
+
 
 def whoami(request, format='json'):
     if ServicesMetadata.objects.count() == 1:

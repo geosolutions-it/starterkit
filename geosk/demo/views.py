@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 import os
 import zipfile
-import StringIO
+from io import StringIO
 
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
