@@ -47,7 +47,13 @@ This is where you can override the hero area block. You can simply modify the co
           <div class="col-md-6">
             <p><a href="{% url "osk_browse" %}"><i class="fa fa-square-o fa-4x rotate-45"></i></a></p>
             <!--<h2><a href="{% url "osk_browse" %}">{{ facets.layer|default:_("No") }} {% blocktrans count counter=facets.layer %}Sensor{% plural %}Sensors{% endblocktrans %}</a></h2>-->
-            <h2><a href="{% url "osk_browse" %}">XXX {% trans 'Sensors'%}</a></h2>
+            <h2>
+                {% if sensors.count %}
+                    <a href="{% url "osk_browse" %}">{{ sensors.count }} {% trans 'Sensors'%}</a>
+                {% else %}
+                    <a href="{% url "osk_browse" %}">No {% trans 'Sensors'%}</a>
+                {% endif %}
+            </h2>
             <p>{% trans "Registerd SOS (Sensor Observation Service). It aggregates observations from live in-situ sensors as well as historical data sets (time series data)" %}</p>
             {% if user.is_authenticated %}
             <p class="text-center"><a class="btn btn-default" href="{% url "osk_browse" %}#ediclient_container" role="button">{% trans "Add sensors" %} &raquo;</a></p>

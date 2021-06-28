@@ -12,6 +12,7 @@ from geosk.osk.proxy import (
     AdamassoftProxy)
 
 from geosk.mdtools import api, views as mdtools_views
+from geosk.views import home
 
 
 geoskurlpatterns = [
@@ -132,6 +133,6 @@ urlpatterns += geoskurlpatterns
 urlpatterns = [
     url(
         r'^/?$',
-        TemplateView.as_view(template_name='site_index.html'), name='home'
+        home, name='home'
     ),
 ] + urlpatterns
