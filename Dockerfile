@@ -2,7 +2,7 @@
 # But it seems it's not possible for now because alpine only has geos 3.6 which is not supported by django 1.8
 # (probably because of https://code.djangoproject.com/ticket/28441)
 
-FROM python:2.7.16-slim-stretch
+FROM python:3.8.0a3-slim-stretch
 MAINTAINER Starterkit development team
 
 # Install system dependencies
@@ -67,13 +67,13 @@ RUN pip install pip==20.1
 # Please read: https://packaging.python.org/requirements/
 
 # fix for known bug in system-wide packages
-RUN ln -fs /usr/lib/python2.7/plat-x86_64-linux-gnu/_sysconfigdata*.py /usr/lib/python2.7/
+# RUN ln -fs /usr/lib/python2.7/plat-x86_64-linux-gnu/_sysconfigdata*.py /usr/lib/python2.7/
 
 # app-specific requirements
 RUN pip install --upgrade --no-cache-dir --src /usr/src -r requirements.txt
 RUN pip install --upgrade -e .
 
 # Install pygdal (after requirements for numpy 1.16)
-RUN pip install pygdal==$(gdal-config --version).*
+# RUN pip install pygdal==$(gdal-config --version).*
 
 ENTRYPOINT service cron restart && /usr/src/app/entrypoint.sh

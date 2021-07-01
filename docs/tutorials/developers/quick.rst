@@ -44,9 +44,9 @@ Move to your development root folder: ::
 
     cd ~/development
 
-Clone the version 2.7.x of GeoNode: ::
+Clone the version 3.0 of GeoNode: ::
 
-    git clone -b 2.7.x https://github.com/GeoNode/geonode
+    git clone -b 3.0 https://github.com/GeoNode/geonode
 
 Install GeoNode
 ---------------

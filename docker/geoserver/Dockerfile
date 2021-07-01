@@ -22,17 +22,17 @@ VOLUME $GEOSERVER_DATA_DIR
 # Optionally add JAI, ImageIO and Marlin Render for improved Geoserver performance
 WORKDIR /tmp
 ARG JAI_IMAGEIO=true
-RUN if [ "$JAI_IMAGEIO" = true ]; then \
-    # NetCDF plugin
-    wget https://build.geoserver.org/geoserver/2.15.x/ext-latest/geoserver-2.15-SNAPSHOT-netcdf-out-plugin.zip && \
-    wget https://build.geoserver.org/geoserver/2.15.x/ext-latest/geoserver-2.15-SNAPSHOT-netcdf-plugin.zip && \
-    unzip -o geoserver-2.15-SNAPSHOT-netcdf-out-plugin.zip  && \
-    unzip -o geoserver-2.15-SNAPSHOT-netcdf-plugin.zip  && \
-    mv *.jar /usr/local/tomcat/webapps/geoserver/WEB-INF/lib/ && \
-    # marlin plugin
-    wget https://github.com/bourgesl/marlin-renderer/releases/download/v0_9_3/marlin-0.9.3-Unsafe.jar && \
-    mv /tmp/marlin-0.9.3-Unsafe.jar /usr/local/tomcat/webapps/geoserver/WEB-INF/lib/ ; \
-    fi
+# RUN if [ "$JAI_IMAGEIO" = true ]; then \
+#     # NetCDF plugin
+#     wget https://build.geoserver.org/geoserver/2.15.x/ext-latest/geoserver-2.15-SNAPSHOT-netcdf-out-plugin.zip && \
+#     wget https://build.geoserver.org/geoserver/2.15.x/ext-latest/geoserver-2.15-SNAPSHOT-netcdf-plugin.zip && \
+#     unzip -o geoserver-2.15-SNAPSHOT-netcdf-out-plugin.zip  && \
+#     unzip -o geoserver-2.15-SNAPSHOT-netcdf-plugin.zip  && \
+#     mv *.jar /usr/local/tomcat/webapps/geoserver/WEB-INF/lib/ && \
+#     # marlin plugin
+#     wget https://github.com/bourgesl/marlin-renderer/releases/download/v0_9_3/marlin-0.9.3-Unsafe.jar && \
+#     mv /tmp/marlin-0.9.3-Unsafe.jar /usr/local/tomcat/webapps/geoserver/WEB-INF/lib/ ; \
+#     fi
 
 ###########docker host###############
 # Set DOCKERHOST variable if DOCKER_HOST exists

@@ -17,7 +17,7 @@ except ImportError:
 def grab(src, dest, name, force=False):
     download = True
     if not dest.exists() or force:
-        print 'Downloading %s' % name
+        print('Downloading {}'.format(name))
     # elif not zipfile.is_zipfile(dest):
     #    print 'Downloading %s (corrupt file)' % name
     else:

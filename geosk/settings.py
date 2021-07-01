@@ -21,6 +21,10 @@
 import ast
 import os
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 # Load more settings from a file called local_settings.py if it exists
 try:
     from geosk.local_settings import *
