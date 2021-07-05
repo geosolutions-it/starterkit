@@ -29,7 +29,7 @@ def waitfordbs(ctx):
 def waitforgeoserver(ctx):
     print("****************************geoserver********************************")
     while not _rest_api_availability(os.environ['GEOSERVER_LOCATION'] + 'rest'):
-        print ("Wait for GeoServer API availability...")
+        print("Wait for GeoServer API availability...")
     print("GeoServer is available for HTTP calls!")
 
 
@@ -155,19 +155,19 @@ def update(ctx):
 @task
 def migrations(ctx):
     print("**************************migrations*******************************")
-    print " 1. django-admin.py makemigrations --settings=geonode.settings"
+    print(" 1. django-admin.py makemigrations --settings=geonode.settings")
     ctx.run("django-admin.py makemigrations --noinput --settings={0}".format(
         "geonode.settings"
     ), pty=True)
-    print " 2. django-admin.py migrate --noinput --settings=geonode.settings"
+    print(" 2. django-admin.py migrate --noinput --settings=geonode.settings")
     ctx.run("django-admin.py migrate --noinput --settings={0}".format(
         "geonode.settings"
     ), pty=True)
-    print " 3. . $HOME/.override_env; django-admin.py makemigrations --merge --noinput"
+    print(" 3. . $HOME/.override_env; django-admin.py makemigrations --merge --noinput")
     ctx.run(". $HOME/.override_env; django-admin.py makemigrations --merge --noinput", pty=True)
-    print " 4. . $HOME/.override_env; django-admin.py makemigrations --noinput"
+    print(" 4. . $HOME/.override_env; django-admin.py makemigrations --noinput")
     ctx.run(". $HOME/.override_env; django-admin.py makemigrations --noinput", pty=True)
-    print " 5. . $HOME/.override_env; django-admin.py migrate --noinput"
+    print(" 5. . $HOME/.override_env; django-admin.py migrate --noinput")
     ctx.run(". $HOME/.override_env; django-admin.py migrate --noinput", pty=True)
 
 
@@ -368,49 +368,49 @@ Y9HKeIQPcy5Cp08KQNpRHQbjpLItDHv12GvkSeXp6OxaUETv3",
 
 def _prepare_service_metadata_fixture():
     pub_ip = _geonode_public_host_ip()
-    print "Public Hostname or IP is {0}".format(pub_ip)
+    print("Public Hostname or IP is {0}".format(pub_ip))
     pub_port = _geonode_public_port()
-    print "Public PORT is {0}".format(pub_port)
+    print("Public PORT is {0}".format(pub_port))
     contact_country = os.getenv("SERVICEPROVIDER_COUNTRY", "")
-    print "contact_country is {0}".format(contact_country)
+    print("contact_country is {0}".format(contact_country))
     provider_url = os.getenv("SERVICEPROVIDER_SITE", "")
-    print "provider_url is {0}".format(provider_url)
+    print("provider_url is {0}".format(provider_url))
     contact_role = os.getenv("SERVICEPROVIDER_INDIVIDUALNAME", "")
-    print "contact_role is {0}".format(contact_role)
+    print("contact_role is {0}".format(contact_role))
     contact_city = os.getenv("SERVICEPROVIDER_CITY", "")
-    print "contact_city is {0}".format(contact_city)
+    print("contact_city is {0}".format(contact_city))
     contact_instructions = os.getenv("SERVICEPROVIDER_INSTRUCTIONS", "")
-    print "contact_instructions is {0}".format(contact_instructions)
+    print("contact_instructions is {0}".format(contact_instructions))
     contact_position = os.getenv("SERVICEPROVIDER_POSITIONNAME", "")
-    print "contact_position is {0}".format(contact_position)
+    print("contact_position is {0}".format(contact_position))
     contact_fax = os.getenv("SERVICEPROVIDER_FAX", "")
-    print "contact_fax is {0}".format(contact_fax)
+    print("contact_fax is {0}".format(contact_fax))
     node_title = os.getenv("SERVICEPROVIDER_NODETITLE", "")
-    print "node_title is {0}".format(node_title)
+    print("node_title is {0}".format(node_title))
     contact_hours = os.getenv("SERVICEPROVIDER_HOURS", "")
-    print "contact_hours is {0}".format(contact_hours)
+    print("contact_hours is {0}".format(contact_hours))
     node_name = os.getenv("SERVICEPROVIDER_NODENAME", "")
-    print "node_name is {0}".format(node_name)
+    print("node_name is {0}".format(node_name))
     node_abstract = os.getenv("SERVICEPROVIDER_NODEABSTRACT", "")
-    print "node_abstract is {0}".format(node_abstract)
+    print("node_abstract is {0}".format(node_abstract))
     contact_address = os.getenv("SERVICEPROVIDER_ADDRESS", "")
-    print "contact_address is {0}".format(contact_address)
+    print("contact_address is {0}".format(contact_address))
     contact_email = os.getenv("SERVICEPROVIDER_EMAIL", "")
-    print "contact_email is {0}".format(contact_email)
+    print("contact_email is {0}".format(contact_email))
     contact_url = os.getenv("SERVICEPROVIDER_SITE", "")
-    print "contact_url is {0}".format(contact_url)
+    print("contact_url is {0}".format(contact_url))
     contact_stateprovince = os.getenv("SERVICEPROVIDER_STATEPROVINCE", "")
-    print "contact_stateprovince is {0}".format(contact_stateprovince)
+    print("contact_stateprovince is {0}".format(contact_stateprovince))
     provider_name = os.getenv("SERVICEPROVIDER_NAME", "")
-    print "provider_name is {0}".format(provider_name)
+    print("provider_name is {0}".format(provider_name))
     contact_postalcode = os.getenv("SERVICEPROVIDER_POSTALCODE", "")
-    print "contact_postalcode is {0}".format(contact_postalcode)
+    print("contact_postalcode is {0}".format(contact_postalcode))
     contact_phone = os.getenv("SERVICEPROVIDER_PHONE", "")
-    print "contact_phone is {0}".format(contact_phone)
+    print("contact_phone is {0}".format(contact_phone))
     contact_name = os.getenv("SERVICEPROVIDER_NAME", "")
-    print "contact_name is {0}".format(contact_name)
+    print("contact_name is {0}".format(contact_name))
     node_keywords = os.getenv("SERVICEPROVIDER_NODEKEYWORDS", "")
-    print "node_keywords is {0}".format(node_keywords)
+    print("node_keywords is {0}".format(node_keywords))
 
     d = datetime.datetime.now()
     mdext_date = d.isoformat()[:23] + "Z"
@@ -451,9 +451,9 @@ def _prepare_service_metadata_fixture():
 
 def _prepare_site_fixture():
     domain = _geonode_public_host_ip()
-    print "Public domain is {0}".format(domain)
+    print("Public domain is {0}".format(domain))
     port = _geonode_public_port()
-    print "Public port is {0}".format(port)
+    print("Public port is {0}".format(port))
     default_fixture = [
         {
             "fields": {
@@ -476,7 +476,7 @@ def _prepare_apikey_fixture():
         "TASTYPIE_APIKEY",
         "pyxW5djJ7XsjeFUXduAsGpR4xMGUwpeBGQRqTeT3"
     )
-    print "Tastypie apikey is {0}".format(api_key)
+    print("Tastypie apikey is {0}".format(api_key))
     d = datetime.datetime.now()
     mdext_date = d.isoformat()[:23] + "Z"
     default_fixture = [
@@ -503,13 +503,13 @@ def _rest_api_availability(url):
         r = requests.request('get', url, verify=False)
         r.raise_for_status()  # Raises a HTTPError if the status is 4xx, 5xxx
     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as e:
-        print "GeoServer connection error is {0}".format(e)
+        print("GeoServer connection error is {0}".format(e))
         return False
     except requests.exceptions.HTTPError as er:
-        print "GeoServer HTTP error is {0}".format(er)
+        print("GeoServer HTTP error is {0}".format(er))
         return False
     else:
-        print "GeoServer API are available!"
+        print("GeoServer API are available!")
         return True
 
 
@@ -522,47 +522,47 @@ def _geoserver_info_provision(url):
         password=settings.OGC_SERVER_DEFAULT_PASSWORD
     )
     gs_settings = Settings(cat)
-    print "GeoServer service url is {0}".format(cat.service_url)
+    print("GeoServer service url is {0}".format(cat.service_url))
     contact_country = os.getenv("SERVICEPROVIDER_COUNTRY", "")
-    print "contact_country is {0}".format(contact_country)
+    print("contact_country is {0}".format(contact_country))
     provider_url = os.getenv("SERVICEPROVIDER_SITE", "")
-    print "provider_url is {0}".format(provider_url)
+    print("provider_url is {0}".format(provider_url))
     contact_role = os.getenv("SERVICEPROVIDER_INDIVIDUALNAME", "")
-    print "contact_role is {0}".format(contact_role)
+    print("contact_role is {0}".format(contact_role))
     contact_city = os.getenv("SERVICEPROVIDER_CITY", "")
-    print "contact_city is {0}".format(contact_city)
+    print("contact_city is {0}".format(contact_city))
     contact_instructions = os.getenv("SERVICEPROVIDER_INSTRUCTIONS", "")
-    print "contact_instructions is {0}".format(contact_instructions)
+    print("contact_instructions is {0}".format(contact_instructions))
     contact_position = os.getenv("SERVICEPROVIDER_POSITIONNAME", "")
-    print "contact_position is {0}".format(contact_position)
+    print("contact_position is {0}".format(contact_position))
     contact_fax = os.getenv("SERVICEPROVIDER_FAX", "")
-    print "contact_fax is {0}".format(contact_fax)
+    print("contact_fax is {0}".format(contact_fax))
     node_title = os.getenv("SERVICEPROVIDER_NODETITLE", "")
-    print "node_title is {0}".format(node_title)
+    print("node_title is {0}".format(node_title))
     contact_hours = os.getenv("SERVICEPROVIDER_HOURS", "")
-    print "contact_hours is {0}".format(contact_hours)
+    print("contact_hours is {0}".format(contact_hours))
     node_name = os.getenv("SERVICEPROVIDER_NODENAME", "")
-    print "node_name is {0}".format(node_name)
+    print("node_name is {0}".format(node_name))
     node_abstract = os.getenv("SERVICEPROVIDER_NODEABSTRACT", "")
-    print "node_abstract is {0}".format(node_abstract)
+    print("node_abstract is {0}".format(node_abstract))
     contact_address = os.getenv("SERVICEPROVIDER_ADDRESS", "")
-    print "contact_address is {0}".format(contact_address)
+    print("contact_address is {0}".format(contact_address))
     contact_email = os.getenv("SERVICEPROVIDER_EMAIL", "")
-    print "contact_email is {0}".format(contact_email)
+    print("contact_email is {0}".format(contact_email))
     contact_url = os.getenv("SERVICEPROVIDER_SITE", "")
-    print "contact_url is {0}".format(contact_url)
+    print("contact_url is {0}".format(contact_url))
     contact_stateprovince = os.getenv("SERVICEPROVIDER_STATEPROVINCE", "")
-    print "contact_stateprovince is {0}".format(contact_stateprovince)
+    print("contact_stateprovince is {0}".format(contact_stateprovince))
     provider_name = os.getenv("SERVICEPROVIDER_NAME", "")
-    print "provider_name is {0}".format(provider_name)
+    print("provider_name is {0}".format(provider_name))
     contact_postalcode = os.getenv("SERVICEPROVIDER_POSTALCODE", "")
-    print "contact_postalcode is {0}".format(contact_postalcode)
+    print("contact_postalcode is {0}".format(contact_postalcode))
     contact_phone = os.getenv("SERVICEPROVIDER_PHONE", "")
-    print "contact_phone is {0}".format(contact_phone)
+    print("contact_phone is {0}".format(contact_phone))
     contact_name = os.getenv("SERVICEPROVIDER_NAME", "")
-    print "contact_name is {0}".format(contact_name)
+    print("contact_name is {0}".format(contact_name))
     node_keywords = os.getenv("SERVICEPROVIDER_NODEKEYWORDS", "")
-    print "node_keywords is {0}".format(node_keywords)
+    print("node_keywords is {0}".format(node_keywords))
     contact = {
         "contact": {
             "address": contact_address,
@@ -603,41 +603,41 @@ def _geoserver_info_provision(url):
 
 def _pycsw_info_provision():
     node_title = os.getenv("SERVICEPROVIDER_NODETITLE", "")
-    print "node_title is {0}".format(node_title)
+    print("node_title is {0}".format(node_title))
     node_abstract = os.getenv("SERVICEPROVIDER_NODEABSTRACT", "")
-    print "node_abstract is {0}".format(node_abstract)
+    print("node_abstract is {0}".format(node_abstract))
     provider_name = os.getenv("SERVICEPROVIDER_NAME", "")
-    print "provider_name is {0}".format(provider_name)
+    print("provider_name is {0}".format(provider_name))
     provider_url = os.getenv("SERVICEPROVIDER_SITE", "")
-    print "provider_url is {0}".format(provider_url)
+    print("provider_url is {0}".format(provider_url))
     contact_name = os.getenv("SERVICEPROVIDER_NAME", "")
-    print "contact_name is {0}".format(contact_name)
+    print("contact_name is {0}".format(contact_name))
     contact_position = os.getenv("SERVICEPROVIDER_POSITIONNAME", "")
-    print "contact_position is {0}".format(contact_position)
+    print("contact_position is {0}".format(contact_position))
     contact_address = os.getenv("SERVICEPROVIDER_ADDRESS", "")
-    print "contact_address is {0}".format(contact_address)
+    print("contact_address is {0}".format(contact_address))
     contact_city = os.getenv("SERVICEPROVIDER_CITY", "")
-    print "contact_city is {0}".format(contact_city)
+    print("contact_city is {0}".format(contact_city))
     contact_stateprovince = os.getenv("SERVICEPROVIDER_STATEPROVINCE", "")
-    print "contact_stateprovince is {0}".format(contact_stateprovince)
+    print("contact_stateprovince is {0}".format(contact_stateprovince))
     contact_postalcode = os.getenv("SERVICEPROVIDER_POSTALCODE", "")
-    print "contact_postalcode is {0}".format(contact_postalcode)
+    print("contact_postalcode is {0}".format(contact_postalcode))
     contact_country = os.getenv("SERVICEPROVIDER_COUNTRY", "")
-    print "contact_country is {0}".format(contact_country)
+    print("contact_country is {0}".format(contact_country))
     contact_phone = os.getenv("SERVICEPROVIDER_PHONE", "")
-    print "contact_phone is {0}".format(contact_phone)
+    print("contact_phone is {0}".format(contact_phone))
     contact_fax = os.getenv("SERVICEPROVIDER_FAX", "")
-    print "contact_fax is {0}".format(contact_fax)
+    print("contact_fax is {0}".format(contact_fax))
     contact_email = os.getenv("SERVICEPROVIDER_EMAIL", "")
-    print "contact_email is {0}".format(contact_email)
+    print("contact_email is {0}".format(contact_email))
     contact_url = os.getenv("SERVICEPROVIDER_SITE", "")
-    print "contact_url is {0}".format(contact_url)
+    print("contact_url is {0}".format(contact_url))
     contact_hours = os.getenv("SERVICEPROVIDER_HOURS", "")
-    print "contact_hours is {0}".format(contact_hours)
+    print("contact_hours is {0}".format(contact_hours))
     contact_instructions = os.getenv("SERVICEPROVIDER_INSTRUCTIONS", "")
-    print "contact_instructions is {0}".format(contact_instructions)
+    print("contact_instructions is {0}".format(contact_instructions))
     contact_role = os.getenv("SERVICEPROVIDER_INDIVIDUALNAME", "")
-    print "contact_role is {0}".format(contact_role)
+    print("contact_role is {0}".format(contact_role))
     PYCSW = {
         # pycsw configuration
         'CONFIGURATION': {
@@ -686,9 +686,9 @@ def _prepare_monitoring_fixture():
     net_scheme = upurl.scheme
     net_loc = upurl.netloc
     pub_ip = _geonode_public_host_ip()
-    print "Public Hostname or IP is {0}".format(pub_ip)
+    print("Public Hostname or IP is {0}".format(pub_ip))
     pub_port = _geonode_public_port()
-    print "Public PORT is {0}".format(pub_port)
+    print("Public PORT is {0}".format(pub_port))
     #d = str(datetime.datetime.now())
     d = '1970-01-01 00:00:00'
     default_fixture = [

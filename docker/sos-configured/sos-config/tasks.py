@@ -14,19 +14,19 @@ BOOTSTRAP_IMAGE_CHEIP = "codenvy/che-ip:nightly"
 
 @task
 def update(ctx):
-    print "***************************initial*********************************"
+    print("***************************initial*********************************")
     ctx.run("env", pty=True)
     pub_ip = _geonode_public_host_ip()
-    print "Public Hostname or IP is {0}".format(pub_ip)
+    print("Public Hostname or IP is {0}".format(pub_ip))
     pub_port = _geonode_public_port()
-    print "Public PORT is {0}".format(pub_port)
+    print("Public PORT is {0}".format(pub_port))
     adminsos_pwd = _sos_admin_pwd(
         os.getenv(
             "SOS_ADMIN_PASSWORD",
             "password"
         )
     )
-    print "Admin SOS password bcrypt hashed is {0}".format(adminsos_pwd)
+    print("Admin SOS password bcrypt hashed is {0}".format(adminsos_pwd))
     envs = {
         "public_schema": "https" if pub_port == 443 else "http",
         "public_fqdn": "{0}".format(pub_ip),
@@ -47,7 +47,7 @@ def update(ctx):
 
 @task
 def updatedb(ctx):
-    print "********************update configuration*************************"
+    print("********************update configuration*************************")
     ctx.run("cp -rup $CATALINA_HOME/webapps/observations/configuration.db \
 $CATALINA_HOME/webapps/observations/configuration.db.backup", pty=True)
     _prepare_configuration_database()
@@ -155,16 +155,16 @@ def _str2int(string):
 def _prepare_dict_identifiers():
 
     pub_ip = _geonode_public_host_ip()
-    print "Public Hostname or IP is {0}".format(pub_ip)
+    print("Public Hostname or IP is {0}".format(pub_ip))
     pub_port = _geonode_public_port()
-    print "Public PORT is {0}".format(pub_port)
+    print("Public PORT is {0}".format(pub_port))
     updated_pwd = _sos_admin_pwd(
         os.getenv(
             "SOS_ADMIN_PASSWORD",
             "password"
         )
     )
-    print "SOS Admin password is {0}".format(updated_pwd)
+    print("SOS Admin password is {0}".format(updated_pwd))
 
     default_administrator_user = {
         "id": 1,

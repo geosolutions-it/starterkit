@@ -47,13 +47,15 @@ except ImportError:  # for pip <= 9.0.3
 inst_req = parse_requirements('requirements.txt',
                               session=pip_session)
 
-REQUIREMENTS = [str(r.req) for r in inst_req]
-
+try:
+    REQUIREMENTS = [str(r.req) for r in inst_req]
+except:
+    REQUIREMENTS = [str(r.requirement) for r in inst_req]
 
 class PostInstallCommand(install):
     def run(self):
         install.run(self)
-        print "Run post-installation"
+        print("Run post-installation")
         self.set_etc()
 
     def set_etc(self):
@@ -78,7 +80,7 @@ class PostInstallCommand(install):
             link_name = os.path.join(
                 self.install_lib, 'geosk', os.path.basename(f))
             if not os.path.islink(link_name):
-                print 'make link', link_name
+                print('make link', link_name)
                 os.symlink(f, link_name)
         os.chmod('/etc/starterkit/pycsw_settings.py', stat.S_IREAD | stat.S_IRGRP | stat.S_IROTH |
                  stat.S_IWRITE | stat.S_IWGRP | stat.S_IWOTH)
