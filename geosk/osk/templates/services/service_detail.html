@@ -36,13 +36,50 @@
 <div class="row" id="contain-slider">
 
     <article class="description tab-pane active" id="info">
+        <div class="col-md-4">
+            <h2><i class="glyphicon glyphicon-info-sign"></i> {% trans "Identification" %}</h2>
+            <dl>
+                <dt>{% trans "Title" %}</dt>
+                <dd>{{ service.title }}</dd>
+                <dt>{% trans "Abstract" %}</dt>
+                <dd>{{ service.abstract }}</dd>
+                <dt>{% trans "Keywords" %}</dt>
+                <dd>{{ service.keywords|join:", " }}</dd>
+            </dl>
+            <h2><i class="glyphicon glyphicon-user"></i> {% trans "Provider" %}</h2>
+            <p>{{ service.name }}</p>
+            <dl>
+                <dt>{% trans "Name" %}</dt>
+                <dd>{{ service.individual_name }}</dd>
+                <dt>{% trans "Organization" %}</dt>
+                <dd>{{ service.individual_name }}</dd>
+                <dt>{% trans "Position" %}</dt>
+                <dd>{{ service.position_name }}</dd>
+                <dt>{% trans "Address" %}</dt>
+                <dd>{{ service.delivery_point }}</dd>
+                <dt>{% trans "Postcode" %}</dt>
+                <dd>{{ service.postal_code }}</dd>
+                <dt>{% trans "City" %}</dt>
+                <dd>{{ service.city }}</dd>
+                <dt>{% trans "Region" %}</dt>
+                <dd>{{ service.admin_area }}</dd>
+                <dt>{% trans "Country" %}</dt>
+                <dd>{{ service.country }}</dd>
+                <dt>{% trans "Email" %}</dt>
+                <dd>{{ service.email }}</dd>
+                <dt>{% trans "Phone" %}</dt>
+                <dd>{{ service.phone }}</dd>
+                <dt>{% trans "Site" %}</dt>
+                <dd class="break-word">{{ service.online_resource }}</dd>
+            </dl>
+        </div>
 
         <div class="col-md-8">
             <h2><i class="glyphicon glyphicon-map-marker"></i> {% trans "Sensors / Procedures" %}</h2>
             <div class="row">
                 <div class="col-md-6">
                     <div class="bg-info" style="padding: 15px;">
-                        {% trans "Number of sensors:" %} <strong>{{ sensors|length  }}</strong>
+                        {% trans "Number of sensors:" %} <strong>{{ total_resources }}</strong>
                     </div>
                 </div>
             </div>
@@ -73,11 +110,12 @@
                     <div class="btn-toolbar">
                         <div class="btn-group">
                               <a href="{% url "osk_describe_sensor" %}?format={{ 'text/html'|urlencode }}&sensor_id={{sensor.id|urlencode }}" target="_blank" data-toggle="modal" class="btn btn-mini btn-primary">{% trans "Sensor details" %}</a>
-                              <a href="{% url "service_detail" sensor.remote_service.id %}" class="btn btn-mini  btn-primary">{% trans "Service details" %}</a>
                             {% if perms.osk.admin_sos %}
+                              {% if sensor.isvalid %}
                                 <a href="{% url "osk_upload" %}?procedureId={{ sensor.id }}" class="btn btn-mini  btn-success">{% trans "Upload observations" %}</a>
                                 <a href="{{ sensor.id }}" download="{{ sensor.id }}" target="_blank" data-toggle="modal" class="btn btn-mini btn-success">Download SensorML</a>
                                 <a href="../observations/service?service=SOS&version=2.0.0&request=GetObservation&MergeObservationsIntoDataArray=true&procedure={{ sensor.id }}" class="btn btn-mini  btn-success">{% trans "Download observations" %}</a>
+                              {% endif %}
                               <a href="{% url "osk_deletesensor" %}?procedure={{ sensor.id }}" class="btn btn-mini btn-danger">{% trans "Delete sensor" %}</a>
                             {% endif %}
                         </div>
